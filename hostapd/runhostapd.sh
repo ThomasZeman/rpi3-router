@@ -21,6 +21,7 @@ fi
 ip addr add $wlanip/$wlanmask dev $wlanif
 
 cat > /etc/hostapd/hostapd.conf << '__EOF__'
+bridge=br0
 interface=wlan0
 driver=nl80211
 ssid=Deep Space One
@@ -43,10 +44,17 @@ trap 'true' SIGINT
 trap 'true' SIGTERM
 trap 'true' SIGHUP
 
-/usr/sbin/hostapd /etc/hostapd/hostapd.conf &
+brctl addbr br0
+brctl addif br0 eth0
+ip link set br0 up
 
-route add $wlansubnet/$wlanmask dev $wlanif
+/usr/sbin/hostapd -d /etc/hostapd/hostapd.conf &
+
+# route add $wlansubnet/$wlanmask dev $wlanif
 
 wait $!
 
-route del $wlansubnet/$wlanmask dev $wlanif
+# route del $wlansubnet/$wlanmask dev $wlanif
+
+brctl delif br0 eth0
+brctl delbr br0
