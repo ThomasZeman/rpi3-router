@@ -14,8 +14,9 @@ docker network create -d bridge --internal --ip-range=10.1.3.0/28 --subnet=10.1.
 -o "com.docker.network.bridge.name"="lantowan1bridge" lantowan1
 
 echo "Creating network 'wan'"
-docker network create -d bridge --ip-range=10.1.4.0/28 --subnet=10.1.4.0/24 \
--o "com.docker.network.bridge.name"="wanbridge" wan
+docker network create -d macvlan  --ip-range=10.1.4.0/28 --subnet=10.1.4.0/24 \
+-o "com.docker.network.bridge.name"="wanbridge" \
+-o parent=eth0 wan
 
 echo "Creating volume 'rpi3-openvpn-data' to store the openvpn configuration"
 docker volume create rpi3-openvpn-data

@@ -1,7 +1,7 @@
 #!/bin/sh
 
 wlanif=wlan0
-wlanip=10.1.1.1
+wlanip=10.1.1.4
 wlansubnet=10.1.1.0
 wlanmask=24
 
@@ -46,15 +46,19 @@ trap 'true' SIGHUP
 
 brctl addbr br0
 brctl addif br0 eth0
+brctl stp br0 on
 ip link set br0 up
 
 /usr/sbin/hostapd -d /etc/hostapd/hostapd.conf &
 
-# route add $wlansubnet/$wlanmask dev $wlanif
+sleep 5
+
+ip route flush all
+ip addr add 10.1.1.9/24 dev br0
+ip route add 10.1.1.0/24 dev br0
+ip route add default via 10.1.1.10
 
 wait $!
-
-# route del $wlansubnet/$wlanmask dev $wlanif
 
 brctl delif br0 eth0
 brctl delbr br0

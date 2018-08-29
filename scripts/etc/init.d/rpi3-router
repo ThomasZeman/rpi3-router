@@ -1,0 +1,22 @@
+#!/sbin/openrc-run
+
+depend() {
+	need net docker
+}
+
+start() {
+	ebegin "Setting up rpi3-router networking"
+        # Dont send or accept redirects
+	sysctl -w net.ipv4.conf.all.accept_redirects=0
+	sysctl -w net.ipv4.conf.all.send_redirects=0
+	sysctl -w net.ipv6.conf.all.accept_redirects=0
+	sysctl -w net.ipv6.conf.all.send_redirects=0
+        # Fix bridge mac address otherwise windows detects a "new" network with every restart
+	ip link set lanbridge address 02:42:fd:17:01:0d
+        # This bridge is connected to another bridge in hostapd so we rather enable the spanning tree protocol
+        brctl stp lanbridge yes
+	iptables -I DOCKER-ISOLATION-STAGE-1 -i lanbridge -o lanbridge -j ACCEPT
+        iptables -I DOCKER-ISOLATION-STAGE-1 -i lantowan0bridge -o lantowan0bridge -j ACCEPT
+        iptables -I DOCKER-ISOLATION-STAGE-1 -i lantowan1bridge -o lantowan1bridge -j ACCEPT
+}
+
