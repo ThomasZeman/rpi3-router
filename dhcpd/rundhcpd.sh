@@ -12,4 +12,19 @@ subnet 10.1.1.0 netmask 255.255.255.0 {
 }
 __EOF__
 
-exec /usr/sbin/dhcpd -d -cf /etc/dhcp/dhcpd.conf -lf /data/dhcpd.leases
+/usr/sbin/dhcpd -cf /etc/dhcp/dhcpd.conf -lf /data/dhcpd.leases
+
+dhcpdPid=$(ps auxw | grep /dhcpd | grep -v grep | awk '{print $1}')
+
+term_handler() {
+        kill -SIGTERM $dhcpdPid
+        kill -TERM $sleepPid
+        exit 143;
+}
+
+trap term_handler SIGTERM
+
+echo "Waiting for dhcpd to exit"
+sleep 2147483647 &
+sleepPid=$!
+wait "$sleepPid"
