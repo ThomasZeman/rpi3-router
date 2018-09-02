@@ -1,7 +1,7 @@
 #!/bin/sh
 
 if [ "$1" == "start" ]; then
-  docker run -d --name hostapd --cap-add=NET_ADMIN --device=/dev/rfkill --network=lan rpi3-hostapd
+  docker run -d --rm --name hostapd --cap-add=NET_ADMIN --device=/dev/rfkill --network=lan rpi3-hostapd
 fi
 
 wifiContainerId=$(docker ps -aqf "name=hostapd")

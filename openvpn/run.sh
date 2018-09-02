@@ -6,5 +6,13 @@ if [ ! $? -eq 0 ]; then
   exit 1
 fi 
 
-docker run -d --rm --name openvpn --cap-add=NET_ADMIN --mount source=rpi3-openvpn-data,target=/data \
---device /dev/net/tun --network=net1 rpi3-openvpn
+containerName=openvpn
+
+docker create --rm --name $containerName --cap-add=NET_ADMIN --mount source=rpi3-openvpn-data,target=/data \
+--device /dev/net/tun --network=lantowan1 rpi3-openvpn
+
+containerId=$(docker ps -aqf "name=$containerName")
+echo $containerId
+docker network connect wan $containerId
+docker start $containerId
+

@@ -11,6 +11,10 @@ start() {
 	sysctl -w net.ipv4.conf.all.send_redirects=0
 	sysctl -w net.ipv6.conf.all.accept_redirects=0
 	sysctl -w net.ipv6.conf.all.send_redirects=0
+	# Not sure why this is necessary but otherwise 'router' does not work
+	sysctl -w net.ipv4.conf.all.rp_filter=0
+	sysctl -w net.ipv4.conf.default.rp_filter=0
+	sysctl -w net.ipv4.conf.lo.rp_filter=0
         # Fix bridge mac address otherwise windows detects a "new" network with every restart
 	ip link set lanbridge address 02:42:fd:17:01:0d
         # This bridge is connected to another bridge in hostapd so we rather enable the spanning tree protocol
