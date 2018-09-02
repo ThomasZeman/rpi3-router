@@ -1,10 +1,5 @@
 #!/bin/sh
 
-# trap signals
-trap 'true' SIGINT
-trap 'true' SIGTERM
-trap 'true' SIGHUP
-
 iptables -t mangle -A PREROUTING -j CONNMARK --restore-mark --nfmask 0xffffffff --ctmask 0xffffffff
 iptables -t mangle -A PREROUTING -s 10.1.1.100/32 -j MARK --set-xmark 0x2/0xffffffff
 iptables -t mangle -A PREROUTING -s 10.1.1.103/32 -j MARK --set-xmark 0x3/0xffffffff
@@ -27,4 +22,13 @@ ip route add default via 10.1.3.3 table 3
 ip rule add fwmark 2 table 2
 ip rule add fwmark 3 table 3
 
-while true; do sleep 1; done
+term_handler() {
+        kill -TERM $sleepPid
+        exit 143;
+}
+
+trap term_handler SIGTERM
+
+sleep 2147483647 &
+sleepPid=$!
+wait "$sleepPid"
