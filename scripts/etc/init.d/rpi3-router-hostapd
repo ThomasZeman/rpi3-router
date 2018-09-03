@@ -1,0 +1,43 @@
+#!/sbin/openrc-run
+
+depend() {
+        need rpi3-router-base
+}
+
+get_containerid() {
+	hostapd_containerid=$(docker ps -aqf "name=hostapd")
+}
+
+get_pid() {
+	get_containerid
+	hostapdpid=$(docker inspect -f '{{.State.Pid}}' $hostapd_containerid)
+}
+
+start() {
+	ebegin "Starting hostapd container"
+	if [[ ! -e "/sys/class/net/wlan0" ]]; then
+		eend "wlan0 does not exist or is still in namespace of previous container"
+		exit 1
+	fi
+	docker run -d --name hostapd --cap-add=NET_ADMIN --device=/dev/rfkill --network=lan rpi3-hostapd
+        if [[ $? != 0 ]]; then
+		eend "Failed to start container. Please remove all hostapd container manually"
+		exit 1
+	fi
+	get_pid
+	mkdir -p /var/run/netns
+	ln -s /proc/$hostapdpid/ns/net /var/run/netns/$hostapdpid
+	iw phy phy0 set netns $hostapdpid
+}
+
+stop() {
+	ebegin "Stopping hostapd container"
+	get_containerid
+	get_pid
+        if [ ! -z $hostapd_containerid ]; then
+		docker stop $hostapd_containerid
+		docker rm $hostapd_containerid
+		iw phy phy0 set netns 1 2>/dev/null
+		rm /var/run/netns/$hostapdpid
+	fi
+}

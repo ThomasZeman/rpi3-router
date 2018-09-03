@@ -25,13 +25,11 @@ echo "Creating volume 'rpi3-dhcpd-data' to store the dhcp leases"
 docker volume create rpi3-dhcpd-data
 
 echo "Copying init script to /etc/init.d"
-cp ./scripts/etc/init.d/rpi3-router /etc/init.d/
+cp ./scripts/etc/init.d/rpi3-router* /etc/init.d/
 
-echo "Adding rpi3-router init script to default runlevel"
-rc-update add rpi3-router default
-
-echo "Starting rpi3-router init script"
-/etc/init.d/rpi3-router start
+echo "Adding rpi3-router init scripts to default runlevel"
+rc-update add rpi3-router-base default
+rc-update add rpi3-router-hostapd default
 
 echo "Before the openvpn container can be started, you must store a openvpn configuration file called 'client.ovpn' in the ovpn volume under \
 /var/lib/docker/volumes/rpi3-openvpn-data/_data"

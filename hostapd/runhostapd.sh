@@ -36,11 +36,9 @@ wpa_pairwise=CCMP
 rsn_pairwise=CCMP
 __EOF__
 
-
-# trap signals
-trap 'true' SIGINT
-trap 'true' SIGTERM
-trap 'true' SIGHUP
+get_pid() {
+	hostapdPid=$(ps auxw | grep /hostapd | grep -v grep | awk '{print $1}')
+}
 
 echo "Creating bridge br0"
 brctl addbr br0
@@ -62,10 +60,7 @@ echo "Starting hostapd"
 # before hostapd has set up the wlan interface
 /usr/sbin/hostapd -d -B /etc/hostapd/hostapd.conf
 
-# Extract hostapd pid
-echo "Output of ps auxw follows:"
-ps auxw
-hostapdPid=$(ps auxw | grep /hostapd | grep -v grep | awk '{print $1}')
+get_pid
 echo "Pid of hostapd: $hostapdPid"
 
 echo "Adding ip to bridge br0"
@@ -84,19 +79,34 @@ echo "Adding default route via 10.1.1.10"
 ip route add default via 10.1.1.10
 
 term_handler() { 
-	kill -SIGTERM $hostapdPid 
-	kill -TERM $child
-	exit 143;
+	echo "Got SIGTERM"
+	kill -TERM $sleep_pid
 }
 trap term_handler SIGTERM
 
-ps aux
-echo "Waiting for hostapd to exit"
-# Todo: Not the best way to wait 'forever'
 sleep 2147483647 &
-child=$!
-wait "$child"
-ps aux
+sleep_pid=$!
+wait $sleep_pid
 
+echo "kill -SIGTERM $hostapdPid"
+kill -SIGTERM $hostapdPid
+
+while : ; do
+	get_pid
+        [[ ! -z $hostapdPid ]] || break
+        echo "Waiting for hostapd to stop"
+        sleep 1
+done
+
+brctl stp br0 off
+
+echo "Removing eth0 from br0"
 brctl delif br0 eth0
+
+echo "Setting br0 to down"
+ip link set dev br0 down
+
+brctl show
+
+echo "Removing br0"
 brctl delbr br0
