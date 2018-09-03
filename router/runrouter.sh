@@ -5,7 +5,9 @@ iptables -t mangle -A PREROUTING -s 10.1.1.100/32 -j MARK --set-xmark 0x2/0xffff
 iptables -t mangle -A PREROUTING -s 10.1.1.103/32 -j MARK --set-xmark 0x3/0xffffffff
 iptables -t mangle -A PREROUTING -s 10.1.1.9/32 -j MARK --set-xmark 0x2/0xffffffff
 iptables -t mangle -A PREROUTING -s 10.1.1.101/32 -j MARK --set-xmark 0x2/0xffffffff
-iptables -t mangle -A PREROUTING -s 10.1.1.0/24 -j NFLOG --nflog-prefix "P1:"
+
+# Enable for ulogd logging ( https://it-offshore.co.uk/linux/alpine-linux/55-alpine-linux-lxc-guest-iptables-logging )
+# iptables -t mangle -A PREROUTING -s 10.1.1.0/24 -j NFLOG --nflog-prefix "P1:"
 
 iptables -t nat -A PREROUTING -p udp -m udp --dport 53 -m mark --mark 0x3 -j DNAT --to-destination 10.1.3.3:53
 iptables -t nat -A PREROUTING -p tcp -m tcp --dport 53 -m mark --mark 0x3 -j DNAT --to-destination 10.1.3.3:53
@@ -23,8 +25,7 @@ ip rule add fwmark 2 table 2
 ip rule add fwmark 3 table 3
 
 term_handler() {
-        kill -TERM $sleepPid
-        exit 143;
+	kill -TERM $sleepPid
 }
 
 trap term_handler SIGTERM
