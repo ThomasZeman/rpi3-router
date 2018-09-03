@@ -19,12 +19,11 @@ dhcpdPid=$(ps auxw | grep /dhcpd | grep -v grep | awk '{print $1}')
 term_handler() {
         kill -SIGTERM $dhcpdPid
         kill -TERM $sleepPid
-        exit 143;
 }
 
 trap term_handler SIGTERM
 
-echo "Waiting for dhcpd to exit"
+echo "Waiting for SIGTERM"
 sleep 2147483647 &
 sleepPid=$!
 wait "$sleepPid"
