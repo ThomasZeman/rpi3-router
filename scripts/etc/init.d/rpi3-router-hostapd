@@ -4,13 +4,13 @@ depend() {
         need rpi3-router-base
 }
 
-get_containerid() {
-	hostapd_containerid=$(docker ps -aqf "name=hostapd")
+get_container_id() {
+	container_id=$(docker ps -aqf "name=hostapd")
 }
 
 get_pid() {
-	get_containerid
-	hostapdpid=$(docker inspect -f '{{.State.Pid}}' $hostapd_containerid)
+	get_container_id
+	hostapd_pid=$(docker inspect -f '{{.State.Pid}}' $container_id)
 }
 
 start() {
@@ -26,18 +26,18 @@ start() {
 	fi
 	get_pid
 	mkdir -p /var/run/netns
-	ln -s /proc/$hostapdpid/ns/net /var/run/netns/$hostapdpid
-	iw phy phy0 set netns $hostapdpid
+	ln -s /proc/$hostapd_pid/ns/net /var/run/netns/$hostapd_pid
+	iw phy phy0 set netns $hostapd_pid
 }
 
 stop() {
 	ebegin "Stopping hostapd container"
-	get_containerid
+	get_container_id
 	get_pid
-        if [ ! -z $hostapd_containerid ]; then
-		docker stop $hostapd_containerid
-		docker rm $hostapd_containerid
+        if [ ! -z $container_id ]; then
+		docker stop $container_id
+		docker rm $container_id
 		iw phy phy0 set netns 1 2>/dev/null
-		rm /var/run/netns/$hostapdpid
+		rm /var/run/netns/$hostapd_pid
 	fi
 }

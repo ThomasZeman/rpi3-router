@@ -6,8 +6,8 @@ depend() {
         need rpi3-router-base
 }
 
-get_containerid() {
-	containerid=$(docker ps -aqf "name=$container_name")
+get_container_id() {
+	container_id=$(docker ps -aqf "name=$container_name")
 }
 
 start() {
@@ -21,9 +21,9 @@ start() {
 
 stop() {
 	ebegin "Stopping dhcpd container"
-	get_containerid
-        if [ ! -z $containerid ]; then
-		docker stop $containerid
-		docker rm $containerid
+	get_container_id
+        if [ ! -z $container_id ]; then
+		docker stop $container_id
+		docker rm $container_id
 	fi
 }
