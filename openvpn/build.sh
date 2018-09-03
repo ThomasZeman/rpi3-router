@@ -1,1 +1,1 @@
-docker build . -t rpi3-openvpn
+docker build . -t rpi3-openvpn-wan
