@@ -4,10 +4,10 @@ cd hostapd
 ./build.sh
 cd ../dhcpd
 ./build.sh
-cd ../wanbase
+cd ../base-wan
 ./build.sh
-cd ../openvpn
+cd ../openvpn-wan
 ./build.sh
-cd ../directwan
+cd ../eth-wan
 ./build.sh
 cd ..

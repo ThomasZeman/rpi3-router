@@ -1,4 +1,4 @@
-FROM wanbase:latest
+FROM base-wan:latest
 
 LABEL maintainer="Thomas Zeman (https://github.com/ThomasZeman)"
 
