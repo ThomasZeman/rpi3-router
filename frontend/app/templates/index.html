@@ -1,0 +1,53 @@
+{% extends 'layout.html' %}
+{% block content %}
+    <script>
+        $(document).ready(function () {
+            var banner = $("#test0")
+var button = $("#test1")
+button.addClass("active")
+// handle click and add class
+button.on("click", function(){
+  banner.addClass("active")
+})
+
+        })
+
+        function subber(element, ip, route_to){
+            element
+            .append('<input type="hidden" name="ip" value="'+ip+'" /> ')
+            .append('<input type="hidden" name="route_to" value="'+route_to+'" /> ');
+            element.submit();
+        }
+    </script>
+    <div class="col-md-9">
+        {% if devices|count > 0 %}
+        <h3 class="lead">Devices</h3>
+        <table id="devices-table" class="table">
+        <tr>
+                <th>Hostname</th>
+                <th>IP Address</th>
+                <th>MAC Address</th>
+                <th>Routes to</th>
+            </tr>
+            {%- for device in devices %}
+                <tr>
+                    <td> {{ device.description }}</td>
+                    <td> {{ device.ipv4 }} </td>
+                    <td> {{ device.mac }} </td>
+                    <td>
+                        <div class="btn-group">
+                        <form action="/route" method="post" id="change">
+                            <a onclick="subber($('#change'), '{{ device.ipv4 }}',1);" class="btn btn-default active" id="mark_done">Sydney</a>
+                            <a onclick="subber($('#change'), '{{ device.ipv4 }}',2);" class="btn btn-default" id="mark_done"> Munich</a>
+
+                        </form>
+                        </div>
+                    </td>
+                </tr>
+            {%- endfor %}
+        </table>
+        {% else %}
+        <h3 class=lead>No devices</h3>
+        {% endif %}
+    </div>
+{% endblock %}

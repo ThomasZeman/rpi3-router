@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+    {% block head %}
+        <meta charset="UTF-8">
+        <title>Route Configurator</title>
+    {% endblock %}
+    <link rel="stylesheet" href="/static/css/bootstrap.css">
+    <link rel="stylesheet" href="/static/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/static/css/bootstrap-select.css">
+    <script src="/static/js/jquery-3.3.1.min.js"></script>
+    <script src="/static/js/bootstrap.js"></script>
+    <script src="/static/js/bootstrap-select.js"></script>
+
+</head>
+
+<body>
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/">Route Configurator</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    {% block content %}{% endblock %}
+</div>
+
+<footer id="footer">
+    <div class="container">
+        <hr>
+        <p class="text-center">Route Configurator built using Flask and Bootstrap</p>
+    </div>
+</footer>
+
+</body>
+</html>
