@@ -16,13 +16,13 @@ iptables -t nat -A PREROUTING -p tcp -m tcp --dport 53 -m mark --mark 0x2 -j DNA
 
 # Pakets w/o mark are defaulting to 10.1.2.3
 ip route del default
-ip route add default via 10.1.2.3
+#ip route add default via 10.1.2.3
 
 ip route add default via 10.1.2.3 table 2
 ip route add default via 10.1.3.3 table 3
 
-ip rule add fwmark 2 table 2
-ip rule add fwmark 3 table 3
+ip rule add fwmark 2 table 2 prio 40000
+ip rule add fwmark 3 table 3 prio 40001
 
 term_handler() {
 	kill -TERM $sleepPid
