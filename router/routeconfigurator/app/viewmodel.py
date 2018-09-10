@@ -3,7 +3,7 @@ from isc_dhcp_leases import Lease, IscDhcpLeases
 class ViewModel:
 
     def __init__(self):
-        leases = IscDhcpLeases('c:\\temp\\dhcpd.leases')
+        leases = IscDhcpLeases('/dhcp-data/dhcpd.leases')
         self.devices = []
         ipsAdded = set()
         for lease in leases.get():

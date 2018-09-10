@@ -30,6 +30,17 @@ term_handler() {
 
 trap term_handler SIGTERM
 
+gunicorn -b 0.0.0.0:80 --daemon routeconfigurator:app
+
+get_pid() {
+        gunicornPid=$(ps auxw | grep /gunicorn | grep -v grep | awk '{print $1}')
+}
+
+
 sleep 2147483647 &
 sleepPid=$!
 wait "$sleepPid"
+
+get_pid()
+
+kill -SIGTERM $gunicornPid
