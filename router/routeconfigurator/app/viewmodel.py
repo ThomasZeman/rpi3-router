@@ -1,9 +1,14 @@
 from isc_dhcp_leases import Lease, IscDhcpLeases
+#from . import TEST_ENVIRONMENT
+from config import Config
 
 class ViewModel:
 
     def __init__(self):
-        leases = IscDhcpLeases('/dhcp-data/dhcpd.leases')
+        if Config.TEST_ENVIRONMENT:       
+            leases = IscDhcpLeases('./app_test/sampledhcpd.leases') 
+        else:
+            leases = IscDhcpLeases('/dhcp-data/dhcpd.leases')
         self.devices = []
         ipsAdded = set()
         for lease in leases.get():

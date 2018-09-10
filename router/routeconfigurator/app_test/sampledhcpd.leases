@@ -1,0 +1,161 @@
+# The format of this file is documented in the dhcpd.leases(5) manual page.
+# This lease file was written by isc-dhcp-4.4.1
+
+# authoring-byte-order entry is generated, DO NOT DELETE
+authoring-byte-order little-endian;
+
+lease 10.1.1.121 {
+  starts 4 2018/08/30 02:56:24;
+  ends 4 2018/08/30 14:56:24;
+  tstp 4 2018/08/30 14:56:24;
+  cltt 4 2018/08/30 02:56:24;
+  binding state free;
+  hardware ethernet bc:df:29:f3:57:0e;
+  uid "\001\254\257\271\376'\016";
+  set vendor-class-identifier = "android-dhcp-7.0";
+}
+lease 10.1.1.123 {
+  starts 6 2018/09/01 17:54:48;
+  ends 0 2018/09/02 17:54:48;
+  tstp 0 2018/09/02 17:54:48;
+  cltt 6 2018/09/01 17:54:48;
+  binding state free;
+  hardware ethernet dc:25:8a:aa:43:73;
+  uid "\001\3545\206\277@\003";
+}
+lease 10.1.1.121 {
+  starts 1 2018/09/03 20:00:59;
+  ends 2 2018/09/04 08:00:59;
+  tstp 2 2018/09/04 08:00:59;
+  cltt 1 2018/09/03 20:00:59;
+  binding state free;
+  hardware ethernet 83:82:13:53:9a:b7;
+  uid "\001\210\203\"\003\222\027";
+  set vendor-class-identifier = "android-dhcp-7.0";
+}
+lease 10.1.1.120 {
+  starts 3 2018/09/05 10:34:13;
+  ends 3 2018/09/05 22:34:13;
+  tstp 3 2018/09/05 22:34:13;
+  cltt 3 2018/09/05 10:34:13;
+  binding state free;
+  hardware ethernet ee:35:a1:b0:7a:a1;
+  uid "\001\000%\234\226\312\275";
+  set vendor-class-identifier = "MSFT 5.0";
+}
+lease 10.1.1.126 {
+  starts 3 2018/09/05 22:18:06;
+  ends 4 2018/09/06 10:18:06;
+  tstp 4 2018/09/06 10:18:06;
+  cltt 3 2018/09/05 22:18:06;
+  binding state free;
+  hardware ethernet aa:31:11:a2:69:be;
+  uid "\001\210\203\"\302)\370";
+  set vendor-class-identifier = "android-dhcp-7.0";
+}
+lease 10.1.1.125 {
+  starts 4 2018/09/06 04:33:38;
+  ends 4 2018/09/06 16:33:38;
+  cltt 4 2018/09/06 04:33:38;
+  binding state active;
+  next binding state free;
+  rewind binding state free;
+  hardware ethernet 20:7c:8f:46:91:4e;
+  uid "\001 |\217F\221N";
+  set vendor-class-identifier = "MSFT 5.0";
+  client-hostname "Dads Machine";
+}
+lease 10.1.1.124 {
+  starts 4 2018/09/06 06:15:57;
+  ends 4 2018/09/06 18:15:57;
+  cltt 4 2018/09/06 06:15:57;
+  binding state active;
+  next binding state free;
+  rewind binding state free;
+  hardware ethernet 34:32:a9:bd:f3:53;
+  set vendor-class-identifier = "dhcpcd-5.2.10:Linux-3.8.13+:armv7l:Marvell Berlin SoC (Flattened Device Tree)";
+  client-hostname "Chromecast Living Room";
+}
+lease 10.1.1.144 {
+  starts 4 2018/09/06 06:15:57;
+  ends 4 2018/09/06 18:15:57;
+  cltt 4 2018/09/06 06:15:57;
+  binding state active;
+  next binding state free;
+  rewind binding state free;
+  hardware ethernet 34:32:a9:bd:f3:54;
+  set vendor-class-identifier = "dhcpcd-5.2.10:Linux-3.8.13+:armv7l:Marvell Berlin SoC (Flattened Device Tree)";
+  client-hostname "Chromecast Bed Room";
+}
+lease 10.1.1.165 {
+  starts 4 2018/09/06 10:33:39;
+  ends 4 2018/09/06 22:33:39;
+  cltt 4 2018/09/06 10:33:39;
+  binding state active;
+  next binding state free;
+  rewind binding state free;
+  hardware ethernet 23:ac:2e:56:2b:1f;
+  uid "\001 |\217F\221N";
+  set vendor-class-identifier = "MSFT 5.0";
+  client-hostname "Mums ipad";
+}
+lease 10.1.1.130 {
+  starts 4 2018/09/06 11:17:51;
+  ends 4 2018/09/06 23:17:51;
+  cltt 4 2018/09/06 11:17:51;
+  binding state active;
+  next binding state free;
+  rewind binding state free;
+  hardware ethernet aa:28:3c:56:bd:be;
+  uid "\001\000%\234\226\312\275";
+  set vendor-class-identifier = "MSFT 5.0";
+  client-hostname "Moritz Firetab";
+}
+lease 10.1.1.140 {
+  starts 4 2018/09/06 11:17:51;
+  ends 4 2018/09/06 23:17:51;
+  cltt 4 2018/09/06 11:17:51;
+  binding state active;
+  next binding state free;
+  rewind binding state free;
+  hardware ethernet aa:27:4c:26:bd:be;
+  uid "\001\000%\234\226\312\275";
+  set vendor-class-identifier = "MSFT 5.0";
+  client-hostname "Hugos Firetab";
+}
+lease 10.1.1.174 {
+  starts 4 2018/09/06 11:17:51;
+  ends 4 2018/09/06 23:17:51;
+  cltt 4 2018/09/06 11:17:51;
+  binding state active;
+  next binding state free;
+  rewind binding state free;
+  hardware ethernet aa:37:4c:26:bd:be;
+  uid "\001\000%\234\226\312\275";
+  set vendor-class-identifier = "MSFT 5.0";
+  client-hostname "Annas ipad";
+}
+lease 10.1.1.142 {
+  starts 4 2018/09/06 11:17:51;
+  ends 4 2018/09/06 23:17:51;
+  cltt 4 2018/09/06 11:17:51;
+  binding state active;
+  next binding state free;
+  rewind binding state free;
+  hardware ethernet aa:28:4d:23:bd:be;
+  uid "\001\000%\234\226\312\275";
+  set vendor-class-identifier = "MSFT 5.0";
+  client-hostname "Dads iphone";
+}
+lease 10.1.1.164 {
+  starts 4 2018/09/06 11:17:51;
+  ends 4 2018/09/06 23:17:51;
+  cltt 4 2018/09/06 11:17:51;
+  binding state active;
+  next binding state free;
+  rewind binding state free;
+  hardware ethernet aa:23:5c:36:ee:be;
+  uid "\001\000%\234\226\312\275";
+  set vendor-class-identifier = "MSFT 5.0";
+  client-hostname "Mums mobile";
+}
