@@ -3,7 +3,8 @@ from subprocess import call
 class OsCommandExecutor:
 
     def execute(self, command_and_arguments):
-        call([command_and_arguments[0], command_and_arguments[1]])
+        print('Executing : ' + command_and_arguments[0] + ' ' + command_and_arguments[1])
+        call(command_and_arguments[0] + ' ' + command_and_arguments[1], shell=True)
 
 class PrintCommandExecutor:
     def execute(self, command_and_arguments):
