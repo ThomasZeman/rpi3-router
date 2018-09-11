@@ -1,4 +1,8 @@
 import unittest
+
+from config import Config
+Config.TEST_ENVIRONMENT = True
+Config.DHCP_LEASES_FILE = 'app_test/sampledhcpd.leases'
 from app.routingmodel import RoutingModel
 from app.routingmodel import Operation
 
@@ -7,8 +11,8 @@ class CommandExecutor:
     def __init__(self):
         self.commands = []
 
-    def execute(self, command_line):
-        self.commands.append(command_line)
+    def execute(self, command_and_arguments):
+        self.commands.append(command_and_arguments[0] + ' ' + command_and_arguments[1])
 
     def get_all_commands(self):
         return self.commands
@@ -51,22 +55,22 @@ class TestStringMethods(unittest.TestCase):
 
     def test_iprule_add(self):
         self.assertEqual(
-            'ip rule add from 10.1.1.100 table 2',
+            ('ip','rule add from 10.1.1.100 table 2'),
             RoutingModel.create_iprules_command(Operation.Add, "10.1.1.100", 2))
 
     def test_iprule_delete(self):
         self.assertEqual(
-            'ip rule del from 10.1.1.110 table 2',
+            ('ip','rule del from 10.1.1.110 table 2'),
             RoutingModel.create_iprules_command(Operation.Delete, "10.1.1.110", 2))
 
     def test_iptables_add(self):
         self.assertEqual(
-            'iptables -t mangle -A PREROUTING -s 10.1.1.190/32 -j MARK --set-xmark 2',
+            ('iptables','-t mangle -A PREROUTING -s 10.1.1.190/32 -j MARK --set-xmark 2'),
             RoutingModel.create_iptables_command(Operation.Add, "10.1.1.190", 2))
 
     def test_iptables_delete(self):
         self.assertEqual(
-            'iptables -t mangle -D PREROUTING -s 10.1.1.180/32 -j MARK --set-xmark 2',
+            ('iptables','-t mangle -D PREROUTING -s 10.1.1.180/32 -j MARK --set-xmark 2'),
             RoutingModel.create_iptables_command(Operation.Delete, "10.1.1.180", 2))
 
 if __name__ == '__main__':

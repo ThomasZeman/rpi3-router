@@ -7,7 +7,7 @@ class Operation(Enum):
 class RoutingModel:
 
     def __init__(self, command_executor):
-        self.devices = {}
+        self.devices = {}     
         self.command_executor = command_executor
 
     def get_route(self, ip):
@@ -33,12 +33,12 @@ class RoutingModel:
     @staticmethod 
     def create_iptables_command(operation, ip, route):
         mapping = {Operation.Add : 'A', Operation.Delete : 'D'}
-        return 'iptables -t mangle -{} PREROUTING -s {}/32 -j MARK --set-xmark {}'.format(mapping[operation], ip, route)
+        return ('iptables','-t mangle -{} PREROUTING -s {}/32 -j MARK --set-xmark {}'.format(mapping[operation], ip, route))
     
     @staticmethod
     def create_iprules_command(operation, ip, route):
         mapping = {Operation.Add : 'add', Operation.Delete : 'del'}
-        return 'ip rule {} from {} table {}'.format(mapping[operation], ip, route)
+        return ('ip','rule {} from {} table {}'.format(mapping[operation], ip, route))
 
 
 class RoutingTable:
