@@ -37,9 +37,8 @@ button.on("click", function(){
                     <td>
                         <div class="btn-group">
                         <form action="/route" method="post" id="change">
-                            <a onclick="subber($('#change'), '{{ device.ipv4 }}',2);" class="btn btn-default active" id="mark_done">Sydney</a>
-                            <a onclick="subber($('#change'), '{{ device.ipv4 }}',3);" class="btn btn-default" id="mark_done"> Munich</a>
-
+                            <a onclick="subber($('#change'), '{{ device.ipv4 }}',2);" class="btn btn-default {% if device.route_to == 2%}active{% endif %}" id="mark_done">Sydney</a>
+                            <a onclick="subber($('#change'), '{{ device.ipv4 }}',3);" class="btn btn-default {% if device.route_to == 3%}active{% endif %}" id="mark_done">Munich</a>
                         </form>
                         </div>
                     </td>

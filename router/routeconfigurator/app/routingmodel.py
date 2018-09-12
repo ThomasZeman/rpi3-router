@@ -15,15 +15,16 @@ class RoutingModel:
             return 0
         return self.devices[ip]
 
-    def set_route(self, ip, route):
-        if ip in self.devices:
-            current_route = self.devices[ip]
-            if route == current_route:
-                return
-            RoutingModel.execute_routing_modifications(self.command_executor, Operation.Delete, ip, current_route)
-            self.devices.pop(ip)
+    def set_route(self, ip, route:int):
+        self.remove_route(ip)
         self.devices.update({ip: route})
         RoutingModel.execute_routing_modifications(self.command_executor, Operation.Add, ip, route)    
+
+    def remove_route(self, ip):
+        if ip in self.devices:
+            current_route = self.devices[ip]
+            RoutingModel.execute_routing_modifications(self.command_executor, Operation.Delete, ip, current_route)
+            self.devices.pop(ip)
 
     @staticmethod
     def execute_routing_modifications(command_executor, operation, ip, route):        
@@ -32,12 +33,12 @@ class RoutingModel:
         command_executor.execute(RoutingModel.create_conntrack_delete_command(ip))
 
     @staticmethod 
-    def create_iptables_command(operation, ip, route):
+    def create_iptables_command(operation, ip, route:int):
         mapping = {Operation.Add : 'A', Operation.Delete : 'D'}
         return ('iptables','-t mangle -{} PREROUTING -s {}/32 -j MARK --set-xmark {}'.format(mapping[operation], ip, route))
     
     @staticmethod
-    def create_iprules_command(operation, ip, route):
+    def create_iprules_command(operation, ip, route:int):
         mapping = {Operation.Add : 'add', Operation.Delete : 'del'}
         return ('ip','rule {} from {} table {}'.format(mapping[operation], ip, route))
 
