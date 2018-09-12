@@ -26,9 +26,10 @@ class RoutingModel:
         RoutingModel.execute_routing_modifications(self.command_executor, Operation.Add, ip, route)    
 
     @staticmethod
-    def execute_routing_modifications(command_executor, operation, ip, route):
+    def execute_routing_modifications(command_executor, operation, ip, route):        
         command_executor.execute(RoutingModel.create_iptables_command(operation, ip, route))
         command_executor.execute(RoutingModel.create_iprules_command(operation, ip, route))  
+        command_executor.execute(RoutingModel.create_conntrack_delete_command(ip))
 
     @staticmethod 
     def create_iptables_command(operation, ip, route):
@@ -39,6 +40,10 @@ class RoutingModel:
     def create_iprules_command(operation, ip, route):
         mapping = {Operation.Add : 'add', Operation.Delete : 'del'}
         return ('ip','rule {} from {} table {}'.format(mapping[operation], ip, route))
+
+    @staticmethod
+    def create_conntrack_delete_command(ip):
+        return ('conntrack','-D -s {}'.format(ip))
 
 
 class RoutingTable:

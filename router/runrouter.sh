@@ -10,9 +10,8 @@ iptables -t nat -A PREROUTING -p tcp -m tcp --dport 53 -m mark --mark 0x3 -j DNA
 iptables -t nat -A PREROUTING -p udp -m udp --dport 53 -m mark --mark 0x2 -j DNAT --to-destination 10.1.2.3:53
 iptables -t nat -A PREROUTING -p tcp -m tcp --dport 53 -m mark --mark 0x2 -j DNAT --to-destination 10.1.2.3:53
 
-# Pakets w/o mark are defaulting to 10.1.2.3
+# No default route. All routes set up explicitly
 ip route del default
-ip route add default via 10.1.2.3
 
 ip route add default via 10.1.2.3 table 2
 ip route add default via 10.1.3.3 table 3

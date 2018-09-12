@@ -23,22 +23,26 @@ class TestStringMethods(unittest.TestCase):
         command_executor = CommandExecutor()
         routing_model = RoutingModel(command_executor)
         routing_model.set_route("10.1.1.111", 3)
-        self.assertEqual(2, len(command_executor.commands))
-        self.assertEqual('ip rule add from 10.1.1.111 table 3', command_executor.commands[1])
+        self.assertEqual(3, len(command_executor.commands))
         self.assertEqual('iptables -t mangle -A PREROUTING -s 10.1.1.111/32 -j MARK --set-xmark 3', command_executor.commands[0])
+        self.assertEqual('ip rule add from 10.1.1.111 table 3', command_executor.commands[1])
+        self.assertEqual('conntrack -D -s 10.1.1.111', command_executor.commands[2])
 
     def test_set_route_was_set_before(self):
         command_executor = CommandExecutor()
         routing_model = RoutingModel(command_executor)
         routing_model.set_route("10.1.1.111", 3)
         routing_model.set_route("10.1.1.111", 2)
-        self.assertEqual(6, len(command_executor.commands))
+        self.assertEqual(9, len(command_executor.commands))
         self.assertEqual('iptables -t mangle -A PREROUTING -s 10.1.1.111/32 -j MARK --set-xmark 3', command_executor.commands[0])
         self.assertEqual('ip rule add from 10.1.1.111 table 3', command_executor.commands[1])
-        self.assertEqual('iptables -t mangle -D PREROUTING -s 10.1.1.111/32 -j MARK --set-xmark 3', command_executor.commands[2])
-        self.assertEqual('ip rule del from 10.1.1.111 table 3', command_executor.commands[3])
-        self.assertEqual('iptables -t mangle -A PREROUTING -s 10.1.1.111/32 -j MARK --set-xmark 2', command_executor.commands[4])
-        self.assertEqual('ip rule add from 10.1.1.111 table 2', command_executor.commands[5])                
+        self.assertEqual('conntrack -D -s 10.1.1.111', command_executor.commands[2])
+        self.assertEqual('iptables -t mangle -D PREROUTING -s 10.1.1.111/32 -j MARK --set-xmark 3', command_executor.commands[3])
+        self.assertEqual('ip rule del from 10.1.1.111 table 3', command_executor.commands[4])
+        self.assertEqual('conntrack -D -s 10.1.1.111', command_executor.commands[5])
+        self.assertEqual('iptables -t mangle -A PREROUTING -s 10.1.1.111/32 -j MARK --set-xmark 2', command_executor.commands[6])
+        self.assertEqual('ip rule add from 10.1.1.111 table 2', command_executor.commands[7])                
+        self.assertEqual('conntrack -D -s 10.1.1.111', command_executor.commands[8])
 
 
     def test_get_route_not_set_before(self):
@@ -72,6 +76,11 @@ class TestStringMethods(unittest.TestCase):
         self.assertEqual(
             ('iptables','-t mangle -D PREROUTING -s 10.1.1.180/32 -j MARK --set-xmark 2'),
             RoutingModel.create_iptables_command(Operation.Delete, "10.1.1.180", 2))
+
+    def test_conntrack(self):
+         self.assertEqual(
+            ('conntrack','-D -s 10.1.1.110'),
+            RoutingModel.create_conntrack_delete_command("10.1.1.110"))       
 
 if __name__ == '__main__':
     unittest.main()
