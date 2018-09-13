@@ -1,6 +1,8 @@
 #!/bin/sh
 
 iptables -t mangle -A PREROUTING -j CONNMARK --restore-mark --nfmask 0xffffffff --ctmask 0xffffffff
+iptables -t mangle -N PREROUTING_MARKING
+iptables -t mangle -A PREROUTING -j PREROUTING_MARKING
 
 # Enable for ulogd logging ( https://it-offshore.co.uk/linux/alpine-linux/55-alpine-linux-lxc-guest-iptables-logging )
 # iptables -t mangle -A PREROUTING -s 10.1.1.0/24 -j NFLOG --nflog-prefix "P1:"
@@ -22,7 +24,7 @@ term_handler() {
 
 trap term_handler SIGTERM
 
-gunicorn -b 0.0.0.0:80 --daemon routeconfigurator:app
+gunicorn gunicorn --workers 1 --worker-class eventlet -b 0.0.0.0:80 --daemon routeconfigurator:app
 
 get_pid() {
         gunicornPid=$(ps auxw | grep /gunicorn | grep -v grep | awk '{print $1}')
