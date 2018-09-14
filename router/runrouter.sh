@@ -18,23 +18,7 @@ ip route del default
 ip route add default via 10.1.2.3 table 2
 ip route add default via 10.1.3.3 table 3
 
-term_handler() {
-	kill -TERM $sleepPid
-}
+export FLASK_APP=routeconfigurator.py
+export FLASK_ENV=production
+exec flask run --host=10.1.1.10 --port=80
 
-trap term_handler SIGTERM
-
-gunicorn gunicorn --workers 1 --worker-class eventlet -b 0.0.0.0:80 --daemon routeconfigurator:app
-
-get_pid() {
-        gunicornPid=$(ps auxw | grep /gunicorn | grep -v grep | awk '{print $1}')
-}
-
-
-sleep 2147483647 &
-sleepPid=$!
-wait "$sleepPid"
-
-get_pid()
-
-kill -SIGTERM $gunicornPid
