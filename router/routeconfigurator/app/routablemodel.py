@@ -18,7 +18,7 @@ class RoutableModel:
             print ('Added devices:' + ', '.join(str(s) for s in added))
             print ('Removed devices:' + ', '.join(str(s) for s in removed))
             self.__setup_default_route(added, self.dhcp_model.leases)
-            self.__remove_route(removed, self.dhcp_model.leases)
+            self.__remove_route(removed, self.leases)
             self.leases = self.dhcp_model.leases.copy()
         timer = threading.Timer(1, self.regular)
         timer.daemon = True
