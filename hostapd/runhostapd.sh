@@ -24,7 +24,7 @@ interface=wlan0
 driver=nl80211
 ssid=Deep Space One
 hw_mode=g
-channel=7
+channel=3
 wmm_enabled=1
 macaddr_acl=0
 auth_algs=1
@@ -34,6 +34,10 @@ wpa_passphrase=test1234
 wpa_key_mgmt=WPA-PSK
 wpa_pairwise=CCMP
 rsn_pairwise=CCMP
+ieee80211n=1
+ieee80211d=1
+ieee80211ac=1
+country_code=US
 __EOF__
 
 get_pid() {
