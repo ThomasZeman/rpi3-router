@@ -2,7 +2,7 @@ FROM alpine:edge
 
 LABEL maintainer="Thomas Zeman (https://github.com/ThomasZeman)"
 
-RUN apk add --no-cache tcpdump dnsmasq iptables ip6tables bind-tools dhclient -X http://dl-cdn.alpinelinux.org/alpine/edge/testing wireguard-tools wireguard-vanilla
+RUN apk add --no-cache tcpdump dnsmasq iptables ip6tables bind-tools dhclient -X http://dl-cdn.alpinelinux.org/alpine/edge/testing wireguard-tools
 
 ADD runwireguard.sh /usr/sbin/runwireguard.sh
 
