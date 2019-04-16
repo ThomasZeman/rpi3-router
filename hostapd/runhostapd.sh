@@ -68,7 +68,7 @@ get_pid
 echo "Pid of hostapd: $hostapdPid"
 
 echo "Adding ip to bridge br0"
-ip addr add 10.1.1.9/24 dev br0
+ip addr add 10.1.1.5/24 dev br0
 
 echo "Setting br0 to up"
 ip link set dev br0 up

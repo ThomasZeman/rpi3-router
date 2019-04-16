@@ -1,0 +1,43 @@
+#!/sbin/openrc-run
+
+depend() {
+        need rpi3-router-base
+}
+
+get_container_id() {
+	container_id=$(docker ps -aqf "name=ethlan")
+}
+
+get_pid() {
+	get_container_id
+	ethlan_pid=$(docker inspect -f '{{.State.Pid}}' $container_id)
+}
+
+start() {
+	ebegin "Starting ethlan container"
+	if [[ ! -e "/sys/class/net/eth1" ]]; then
+		eend "eth1 does not exist or is still in namespace of previous container"
+		exit 1
+	fi
+	docker run -d --name ethlan --cap-add=NET_ADMIN --network=lan --ip=10.1.1.6 rpi3-ethlan
+        if [[ $? != 0 ]]; then
+		eend "Failed to start container. Please remove all ethlan container manually"
+		exit 1
+	fi
+	get_pid
+	mkdir -p /var/run/netns
+	ln -s /proc/$ethlan_pid/ns/net /var/run/netns/$ethlan_pid
+        ip link set eth1 netns $ethlan_pid
+}
+
+stop() {
+	ebegin "Stopping hostapd container"
+	get_container_id
+	get_pid
+        if [ ! -z $container_id ]; then
+		docker stop $container_id
+		docker rm $container_id
+ 		ip link set eth1 netns 1 2>/dev/null		
+		rm /var/run/netns/$ethlan_pid
+	fi
+}
