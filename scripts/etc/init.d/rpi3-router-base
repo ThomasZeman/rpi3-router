@@ -19,6 +19,8 @@ start() {
 	ip link set lanbridge address 02:42:fd:17:01:0d
         # This bridge is connected to another bridge in hostapd so we rather enable the spanning tree protocol
         brctl stp lanbridge yes
+        # Remove all stopped container
+	docker rm $(docker ps -a -q)
 
 	iptables -I DOCKER-ISOLATION-STAGE-1 -i lanbridge -o lanbridge -j ACCEPT
         iptables -I DOCKER-ISOLATION-STAGE-1 -i lantowan0bridge -o lantowan0bridge -j ACCEPT
