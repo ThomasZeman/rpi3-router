@@ -10,23 +10,37 @@ get_container_id() {
 	container_id=$(docker ps -aqf "name=$container_name")
 }
 
+get_pid() {
+        get_container_id
+        pid=$(docker inspect -f '{{.State.Pid}}' $container_id)
+}
+
 start() {
 	ebegin "Starting $container_name container"
-	docker create --name $container_name --cap-add=NET_ADMIN --network lantowan0 rpi3-eth-wan
+        if [[ ! -e "/sys/class/net/eth2" ]]; then
+	        eend "eth2 does not exist or is still in namespace of previous container"
+                exit 1
+        fi
+
+	docker run -d --name $container_name --cap-add=NET_ADMIN --network=wan --ip=10.1.4.10 rpi3-eth-wan
         if [[ $? != 0 ]]; then
 		eend "Failed to start container. Please remove all $container_name container manually"
 		exit 1
 	fi
-	get_container_id
-	docker network connect wan $container_id
-	docker start $container_id
+	get_pid
+        mkdir -p /var/run/netns
+        ln -s /proc/$pid/ns/net /var/run/netns/$pid
+	ip link set eth2 netns $pid
 }
 
 stop() {
 	ebegin "Stopping $container_name container"
-	get_container_id
+	get_pid
         if [ ! -z $container_id ]; then
 		docker stop $container_id
 		docker rm $container_id
+                ip link set eth2 netns 1 2>/dev/null
+                rm /var/run/netns/$pid
+
 	fi
 }

@@ -1,14 +1,25 @@
 #!/bin/sh
 
-ip addr flush dev eth0
+ethif=eth2
 
-ip route add 10.1.1.0/24 via 10.1.2.2
+# Waiting 10 seconds for wlan interface to come up / be transfered to container namespace
 
-touch /etc/resolv.1.conf
+counter=0
+until [ -e "/sys/class/net/$ethif" ] || [ $counter -eq 1200 ]; do
+  sleep 1
+  echo "Waiting for interface '$ethif' to become available... $((counter++))"
+done
 
-/usr/sbin/dhclient eth0
+if [ ! -e "/sys/class/net/$ethif" ]; then
+  echo "Giving up. Make sure interface has been set to namespace of container"
+  exit 1
+fi
 
-/usr/sbin/dnsmasq --conf-file=/etc/dnsmasq.conf
+ip route del default
+ip addr flush dev $ethif
+ip route add 10.1.1.0/24 via 10.1.4.2
+
+/usr/sbin/dhclient $ethif
 
 iptables -t nat -A POSTROUTING -s 10.1.0.0/16 -j MASQUERADE
 
