@@ -13,15 +13,15 @@ get_container_id() {
 start() {
 	ebegin "Starting $container_name container"
 	docker create --name $container_name --mount source=rpi3-dhcpd-data,target=/dhcp-data,readonly \
-	 --cap-add=NET_ADMIN --network lan --ip 10.1.1.10 \
+	 --cap-add=NET_ADMIN --network lan --ip 10.0.0.1 \
 	rpi3-router
         if [[ $? != 0 ]]; then
 		eend "Failed to start container. Please remove all $container_name container manually"
 		exit 1
 	fi
 	get_container_id
-	docker network connect lantowan0 $container_id
-	docker network connect lantowan1 $container_id
+	docker network connect --ip 10.1.2.2 lantowan0 $container_id
+	docker network connect --ip 10.1.3.2 lantowan1 $container_id
 	docker start $container_id
 }
 

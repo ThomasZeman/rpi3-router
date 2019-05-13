@@ -1,8 +1,8 @@
 #!/bin/sh
 
 wlanif=wlan0
-wlanip=10.1.1.4
-wlansubnet=10.1.1.0
+wlanip=10.0.0.4
+wlansubnet=10.0.0.0
 wlanmask=24
 
 # Waiting 10 seconds for wlan interface to come up / be transfered to container namespace
@@ -68,7 +68,7 @@ get_pid
 echo "Pid of hostapd: $hostapdPid"
 
 echo "Adding ip to bridge br0"
-ip addr add 10.1.1.5/24 dev br0
+ip addr add 10.0.0.5/24 dev br0
 
 echo "Setting br0 to up"
 ip link set dev br0 up
@@ -77,10 +77,10 @@ echo "Flushing all routes"
 ip route flush all
 
 echo "Adding route for br0"
-ip route add 10.1.1.0/24 dev br0
+ip route add 10.0.0.0/24 dev br0
 
-echo "Adding default route via 10.1.1.10"
-ip route add default via 10.1.1.10
+echo "Adding default route via 10.0.0.1"
+ip route add default via 10.0.0.1
 
 term_handler() { 
 	echo "Got SIGTERM"

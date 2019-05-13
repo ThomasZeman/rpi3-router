@@ -17,11 +17,11 @@ fi
 
 ip route del default
 ip addr flush dev $ethif
-ip route add 10.1.1.0/24 via 10.1.4.2
+ip route add 10.0.0.0/24 via 10.1.4.2
 
 /usr/sbin/dhclient $ethif
 
-iptables -t nat -A POSTROUTING -s 10.1.0.0/16 -j MASQUERADE
+iptables -t nat -A POSTROUTING -s 10.0.0.0/8 -j MASQUERADE
 
 term_handler() {
         kill -TERM $sleepPid

@@ -2,7 +2,7 @@ echo "Removing docker networks (Errors can be ignored)"
 docker network rm lan lantowan0 lantowan1 wan
 
 echo "Creating network 'lan'"
-docker network create -d bridge --internal --ip-range=10.1.1.0/28 --subnet=10.1.1.0/24 \
+docker network create -d bridge --internal --ip-range=10.0.0.0/28 --subnet=10.0.0.0/24 --gateway=10.0.0.254 \
 -o "com.docker.network.bridge.name"="lanbridge" lan
 
 echo "Creating network 'lantowan0'"

@@ -19,7 +19,7 @@ start() {
 		eend "eth1 does not exist or is still in namespace of previous container"
 		exit 1
 	fi
-	docker run -d --name ethlan --cap-add=NET_ADMIN --network=lan --ip=10.1.1.6 rpi3-ethlan
+	docker run -d --name ethlan --cap-add=NET_ADMIN --network=lan --ip=10.0.0.6 rpi3-ethlan
         if [[ $? != 0 ]]; then
 		eend "Failed to start container. Please remove all ethlan container manually"
 		exit 1

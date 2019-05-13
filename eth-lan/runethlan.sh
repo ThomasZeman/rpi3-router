@@ -1,8 +1,8 @@
 #!/bin/sh
 
 ethif=eth1
-ethip=10.1.1.7
-ethsubnet=10.1.1.0
+ethip=10.0.0.7
+ethsubnet=10.0.0.0
 ethmask=24
 
 # Mostly copied from hostapd - consider common location for both
@@ -40,7 +40,7 @@ echo "Setting external eth interface to up"
 ip link set dev $ethif up
 
 echo "Adding ip to bridge br0"
-ip addr add 10.1.1.8/24 dev br0
+ip addr add 10.0.0.8/24 dev br0
 
 echo "Setting br0 to up"
 ip link set dev br0 up
@@ -49,10 +49,10 @@ echo "Flushing all routes"
 ip route flush all
 
 echo "Adding route for br0"
-ip route add 10.1.1.0/24 dev br0
+ip route add 10.0.0.0/24 dev br0
 
-echo "Adding default route via 10.1.1.10"
-ip route add default via 10.1.1.10
+echo "Adding default route via 10.0.0.1"
+ip route add default via 10.0.0.1
 
 term_handler() {
         echo "Got SIGTERM"

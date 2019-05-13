@@ -5,10 +5,10 @@ touch /data/dhcpd.leases
 cat > /etc/dhcp/dhcpd.conf << '__EOF__'
 authoritative;
 
-subnet 10.1.1.0 netmask 255.255.255.0 {
-  range 10.1.1.100 10.1.1.200;
-  option routers 10.1.1.10;
-  option domain-name-servers 10.1.1.10;
+subnet 10.0.0.0 netmask 255.255.255.0 {
+  range 10.0.0.100 10.0.0.200;
+  option routers 10.0.0.1;
+  option domain-name-servers 10.0.0.1;
   option interface-mtu 1420;
 }
 __EOF__
