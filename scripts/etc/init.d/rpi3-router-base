@@ -1,16 +1,17 @@
 #!/sbin/openrc-run
 
-depend() {
-	need net docker
-}
-
 start() {
 	ebegin "Setting up rpi3-router networking"
+        # Had trouble with this script being executed before docker daemon startup was completed
+	sleep 10
         # Dont send or accept redirects
 	sysctl -w net.ipv4.conf.all.accept_redirects=0
 	sysctl -w net.ipv4.conf.all.send_redirects=0
 	sysctl -w net.ipv6.conf.all.accept_redirects=0
-	sysctl -w net.ipv6.conf.all.send_redirects=0
+	# sysctl -w net.ipv6.conf.all.send_redirects=0
+	# enable ipv6
+        sysctl -w net.ipv6.conf.all.disable_ipv6=0
+        sysctl -w net.ipv6.conf.default.disable_ipv6=0
 	# Not sure atm why rp filter needs to be turned off. Not doing any ip spoofing here.
 	sysctl -w net.ipv4.conf.all.rp_filter=0
 	sysctl -w net.ipv4.conf.default.rp_filter=0
