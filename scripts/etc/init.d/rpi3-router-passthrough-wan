@@ -12,7 +12,7 @@ get_container_id() {
 
 start() {
 	ebegin "Starting $container_name container"
-	docker create --name $container_name --cap-add=NET_ADMIN --network=lantowan0 --ip=10.1.2.3 rpi3-passthrough-wan
+	docker create --name $container_name --cap-add=NET_ADMIN --network=lantowan1 --ip=10.1.1.2 rpi3-passthrough-wan
         if [[ $? != 0 ]]; then
 		eend "Failed to start container. Please remove all $container_name container manually"
 		exit 1

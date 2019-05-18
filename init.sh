@@ -5,13 +5,13 @@ echo "Creating network 'lan'"
 docker network create -d bridge --internal --ip-range=10.0.0.0/28 --subnet=10.0.0.0/24 --gateway=10.0.0.254 \
 -o "com.docker.network.bridge.name"="lanbridge" lan
 
-echo "Creating network 'lantowan0'"
-docker network create -d bridge --internal --ip-range=10.1.2.0/28 --subnet=10.1.2.0/24 \
--o "com.docker.network.bridge.name"="lantowan0bridge" lantowan0
-
 echo "Creating network 'lantowan1'"
-docker network create -d bridge --internal --ip-range=10.1.3.0/28 --subnet=10.1.3.0/24 \
+docker network create -d bridge --internal --ip-range=10.1.1.0/28 --subnet=10.1.1.0/24 --gateway=10.1.1.254 \
 -o "com.docker.network.bridge.name"="lantowan1bridge" lantowan1
+
+echo "Creating network 'lantowan2'"
+docker network create -d bridge --internal --ip-range=10.1.2.0/28 --subnet=10.1.2.0/24 --gateway=10.1.2.254 \
+-o "com.docker.network.bridge.name"="lantowan2bridge" lantowan2
 
 echo "Creating network 'wan'"
 docker network create -d bridge --ip-range=10.1.4.0/28 --subnet=10.1.4.0/24 \

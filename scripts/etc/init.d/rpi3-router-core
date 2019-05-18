@@ -20,8 +20,8 @@ start() {
 		exit 1
 	fi
 	get_container_id
-	docker network connect --ip 10.1.2.2 lantowan0 $container_id
-	docker network connect --ip 10.1.3.2 lantowan1 $container_id
+	docker network connect --ip 10.1.1.1 lantowan1 $container_id
+	docker network connect --ip 10.1.2.1 lantowan2 $container_id
 	docker start $container_id
 }
 

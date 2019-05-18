@@ -7,7 +7,7 @@ trap 'true' SIGHUP
 
 # ip addr flush dev eth0
 ip route del default
-ip route add 10.0.0.0/24 via 10.1.3.2
+ip route add 10.0.0.0/24 via 10.1.2.1
 
 # Promise is: Either traffic goes through VPN or gets rejected
 # We do not want traffic to 'leak' accidently when VPN is down
