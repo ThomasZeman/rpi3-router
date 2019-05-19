@@ -31,7 +31,7 @@ then
   exit 1
 fi
 
-ip route add $SERVER_ENDPOINT via 10.1.4.10
+ip route add $SERVER_ENDPOINT via 10.1.0.100
 
 wg-quick up /data/wg0.conf
 

@@ -22,7 +22,7 @@ start() {
                 exit 1
         fi
 
-	docker run -d --name $container_name --cap-add=NET_ADMIN --network=wan --ip=10.1.4.10 rpi3-eth-wan
+	docker run -d --name $container_name --cap-add=NET_ADMIN --network=wan --ip=10.1.0.100 rpi3-eth-wan
         if [[ $? != 0 ]]; then
 		eend "Failed to start container. Please remove all $container_name container manually"
 		exit 1

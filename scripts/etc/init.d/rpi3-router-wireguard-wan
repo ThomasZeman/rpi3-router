@@ -24,7 +24,7 @@ start() {
 		exit 1
 	fi
 	get_container_id
-	docker network connect wan $container_id
+	docker network connect wan --ip=10.1.0.2 $container_id
 	docker start $container_id
 }
 
