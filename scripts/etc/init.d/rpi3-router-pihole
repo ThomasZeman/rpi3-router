@@ -1,0 +1,41 @@
+#!/sbin/openrc-run
+
+container_name="pihole"
+
+depend() {
+        need rpi3-router-base
+}
+
+get_container_id() {
+	container_id="$(docker ps -aqf "name=${container_name}1") $(docker ps -aqf "name=${container_name}2")"
+}
+
+start() {
+	ebegin "Starting pihole container"
+	docker pull pihole/pihole:latest
+        docker run -d --name ${container_name}1 --mount source=etc-pihole1,target=/etc/pihole --cap-add=NET_ADMIN --network=lantowan1 --ip=10.1.1.4 pihole/pihole:latest
+        docker run -d --name ${container_name}2 --mount source=etc-pihole2,target=/etc/pihole --cap-add=NET_ADMIN --network=lantowan2 --ip=10.1.2.4 pihole/pihole:latest
+        if [[ $? != 0 ]]; then
+		eend "Failed to start container. Please remove all $container_name container manually"
+		exit 1
+	fi
+	get_container_id
+	net_id=1
+	for i in $container_id; do
+		docker exec $i bash -c "echo 'nameserver 10.1.$net_id.2' >/etc/resolv.conf"
+		docker exec $i ip route del default
+	        docker exec $i ip route add default via 10.1.$net_id.2
+		net_id=$((net_id+1))
+	done
+}
+
+stop() {
+	ebegin "Stopping pihole container"
+	get_container_id
+        if [ ! -z $container_id ]; then
+		for i in $container_id; do
+			docker stop $i
+			docker rm $i
+		done
+	fi
+}
