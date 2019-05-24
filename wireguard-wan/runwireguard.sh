@@ -17,8 +17,6 @@ iptables -A FORWARD -s 10.0.0.0/8 -o eth0 -j REJECT
 # However, using 1.1.1.1 as a default is not great either. Best
 # would be wg sets the nameserver of the server 
 
-echo "nameserver 1.1.1.1" > /etc/resolv.conf
-
 iptables -t nat -A POSTROUTING -s 10.0.0.0/8 -j MASQUERADE
 
 # Find Peer section, find endpoint key value and print value, find ip:port and print ip, remove spaces
@@ -34,8 +32,6 @@ fi
 ip route add $SERVER_ENDPOINT via 10.1.0.100
 
 wg-quick up /data/wg0.conf
-
-/usr/sbin/dnsmasq --conf-file=/etc/dnsmasq.conf
 
 term_handler() {
         kill -SIGTERM $dhcpdPid
