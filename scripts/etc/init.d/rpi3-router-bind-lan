@@ -1,0 +1,29 @@
+#!/sbin/openrc-run
+
+container_name="bind-lan"
+
+depend() {
+        need rpi3-router-base
+}
+
+get_container_id() {
+	container_id=$(docker ps -aqf "name=$container_name")
+}
+
+start() {
+	ebegin "Starting $container_name container"
+	docker run -d --name $container_name --mount source=rpi3-bind9-data,target=/data --network=lan --ip=10.0.0.9 rpi3-bind-lan
+        if [[ $? != 0 ]]; then
+		eend "Failed to start container. Please remove all $container_name container manually"
+		exit 1
+	fi
+}
+
+stop() {
+	ebegin "Stopping $container_name container"
+	get_container_id
+        if [ ! -z $container_id ]; then
+		docker stop $container_id
+		docker rm $container_id
+	fi
+}
