@@ -12,7 +12,7 @@ get_container_id() {
 
 start() {
 	ebegin "Starting $container_name container"
-	docker run -d --name $container_name --mount source=rpi3-bind9-data,target=/data --network=lan --ip=10.0.0.9 rpi3-bind-lan
+	docker run -d --name $container_name --mount source=rpi3-bind9-data,target=/data --network=lan --ip=10.0.0.9 --log-opt max-size=1m --log-opt max-file=5 rpi3-bind-lan
         if [[ $? != 0 ]]; then
 		eend "Failed to start container. Please remove all $container_name container manually"
 		exit 1

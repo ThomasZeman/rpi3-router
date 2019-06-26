@@ -9,7 +9,6 @@ trap term_handler SIGTERM
 
 sleep 10
 
-echo -e "10.0.0.1	router" >> /etc/hosts
 dnsmasq -d
 
 sleep 2147483647 &

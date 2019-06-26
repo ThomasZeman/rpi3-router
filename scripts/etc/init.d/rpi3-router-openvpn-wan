@@ -19,7 +19,7 @@ start() {
 	fi
 
 	docker create --name $container_name --cap-add=NET_ADMIN --mount source=rpi3-openvpn-data,target=/data \
-	--device /dev/net/tun --network=lantowan1 rpi3-openvpn-wan
+	--device /dev/net/tun --network=lantowan1 --log-opt max-size=1m --log-opt max-file=5 rpi3-openvpn-wan
         if [[ $? != 0 ]]; then
 		eend "Failed to start container. Please remove all $container_name container manually"
 		exit 1

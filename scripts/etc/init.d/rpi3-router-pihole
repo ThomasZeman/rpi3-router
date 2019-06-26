@@ -13,8 +13,8 @@ get_container_id() {
 start() {
 	ebegin "Starting pihole container"
 	docker pull pihole/pihole:latest
-        docker run -d --name ${container_name}1 --mount source=etc-pihole1,target=/etc/pihole --cap-add=NET_ADMIN --network=lantowan1 --ip=10.1.1.5 pihole/pihole:latest
-        docker run -d --name ${container_name}2 --mount source=etc-pihole2,target=/etc/pihole --cap-add=NET_ADMIN --network=lantowan2 --ip=10.1.2.5 pihole/pihole:latest
+        docker run -d --name ${container_name}1 --mount source=etc-pihole1,target=/etc/pihole --cap-add=NET_ADMIN --network=lantowan1 --ip=10.1.1.5 --log-opt max-size=1m --log-opt max-file=5 pihole/pihole:latest
+        docker run -d --name ${container_name}2 --mount source=etc-pihole2,target=/etc/pihole --cap-add=NET_ADMIN --network=lantowan2 --ip=10.1.2.5 --log-opt max-size=1m --log-opt max-file=5 pihole/pihole:latest
         if [[ $? != 0 ]]; then
 		eend "Failed to start container. Please remove all $container_name container manually"
 		exit 1

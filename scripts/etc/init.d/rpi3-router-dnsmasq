@@ -12,8 +12,8 @@ get_container_id() {
 
 start() {
 	ebegin "Starting $container_name container"
-        docker run -d --name ${container_name}1 --cap-add=NET_ADMIN --network=lantowan1 --ip=10.1.1.4 rpi3-dnsmasq
-        docker run -d --name ${container_name}2 --cap-add=NET_ADMIN --network=lantowan2 --ip=10.1.2.4 rpi3-dnsmasq
+        docker run -d --name ${container_name}1 --cap-add=NET_ADMIN --network=lantowan1 --ip=10.1.1.4 --log-opt max-size=1m --log-opt max-file=5 rpi3-dnsmasq
+        docker run -d --name ${container_name}2 --cap-add=NET_ADMIN --network=lantowan2 --ip=10.1.2.4 --log-opt max-size=1m --log-opt max-file=5 rpi3-dnsmasq
         if [[ $? != 0 ]]; then
 		eend "Failed to start container. Please remove all $container_name container manually"
 		exit 1

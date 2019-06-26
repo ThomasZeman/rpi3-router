@@ -1,14 +1,16 @@
 $TTL 86400      ; 1 day
-@			IN SOA  ns.lan. root.lan. (
+@			IN SOA  nslocal.lan. root.lan. (
                                 1          ; serial
                                 604800     ; refresh (1 week)
                                 86400      ; retry (1 day)
                                 2419200    ; expire (4 weeks)
                                 86400      ; minimum (1 day)
                                 )
-			IN	NS      ns.lan.
+			IN	NS      nslocal.lan.
 
-ns.lan.			IN	A	10.0.0.9
+router.lan.		IN	A	10.0.0.1
+ns.lan.			IN	A	10.0.0.1
+nslocal.lan.		IN	A	10.0.0.9
 
 
 

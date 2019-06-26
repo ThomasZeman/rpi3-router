@@ -17,6 +17,7 @@ iptables -t nat -A PREROUTING -p tcp -m tcp -d 10.0.0.1 --dport 53 -m mark --mar
 iptables -P INPUT DROP
 iptables -A INPUT -i lo -j ACCEPT
 iptables -A INPUT -s 10.0.0.0/24 -j ACCEPT
+iptables -A INPUT -s 10.1.0.0/24 -j ACCEPT
 
 # No default route. All routes set up explicitly
 ip route del default

@@ -19,7 +19,7 @@ start() {
 		eend "wlan0 does not exist or is still in namespace of previous container"
 		exit 1
 	fi
-	docker run -d --name hostapd --cap-add=NET_ADMIN --device=/dev/rfkill --network=lan --ip=10.0.0.3 rpi3-hostapd
+	docker run -d --name hostapd --cap-add=NET_ADMIN --device=/dev/rfkill --network=lan --ip=10.0.0.3 --log-opt max-size=1m --log-opt max-file=5 rpi3-hostapd
         if [[ $? != 0 ]]; then
 		eend "Failed to start container. Please remove all hostapd container manually"
 		exit 1

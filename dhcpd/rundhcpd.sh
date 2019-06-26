@@ -10,11 +10,16 @@ authoritative;
 
 option domain-name "lan";
 ddns-updates on;
-ddns-update-style interim;
+ddns-update-style standard;
 ddns-domainname "lan";
 ddns-rev-domainname "in-addr.arpa";
+update-optimization false;
 
 ignore client-updates;
+
+default-lease-time 600;
+max-lease-time 7200;
+
 
 zone lan. {
   primary 10.0.0.9;
@@ -34,20 +39,18 @@ subnet 10.0.0.0 netmask 255.255.255.0 {
 }
 __EOF__
 
-cat /etc/dhcp/dhcpd.conf
+/usr/sbin/dhcpd -d -cf /etc/dhcp/dhcpd.conf -lf /data/dhcpd.leases
 
-/usr/sbin/dhcpd -cf /etc/dhcp/dhcpd.conf -lf /data/dhcpd.leases
+#dhcpdPid=$(ps auxw | grep /dhcpd | grep -v grep | awk '{print $1}')
 
-dhcpdPid=$(ps auxw | grep /dhcpd | grep -v grep | awk '{print $1}')
+#term_handler() {
+#        kill -SIGTERM $dhcpdPid
+#        kill -TERM $sleepPid
+#}
 
-term_handler() {
-        kill -SIGTERM $dhcpdPid
-        kill -TERM $sleepPid
-}
+#trap term_handler SIGTERM
 
-trap term_handler SIGTERM
-
-echo "Waiting for SIGTERM"
-sleep 2147483647 &
-sleepPid=$!
-wait "$sleepPid"
+#echo "Waiting for SIGTERM"
+#sleep 2147483647 &
+#sleepPid=$!
+#wait "$sleepPid"

@@ -12,7 +12,7 @@ get_container_id() {
 
 start() {
 	ebegin "Starting dhcpd container"
-	docker run -d --name $container_name --mount source=rpi3-dhcpd-data,target=/data --network=lan --ip=10.0.0.2 rpi3-dhcpd
+	docker run -d --name $container_name --mount source=rpi3-dhcpd-data,target=/data --network=lan --ip=10.0.0.2 --log-opt max-size=1m --log-opt max-file=5 rpi3-dhcpd
         if [[ $? != 0 ]]; then
 		eend "Failed to start container. Please remove all $container_name container manually"
 		exit 1
